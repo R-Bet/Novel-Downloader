@@ -12,4 +12,6 @@ Field explanations:
 
 "Chapter name" is the pattern for the TXT names. For example, chapter name set as "Chapter [i]" would name chapter number 3 "Chapter 3".
 
-I do not condone pirating, and this application is made as proof of concept. However, a setup folder is provided.
+Setup included in "Setup" folder.
+
+I do not condone pirating, and this application is made as proof of concept. 
