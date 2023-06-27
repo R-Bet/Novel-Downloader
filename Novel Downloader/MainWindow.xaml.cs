@@ -54,36 +54,40 @@ namespace Novel_Downloader
 
             await Task.Run((() =>
             {
-                HtmlWeb web = new HtmlWeb();
-                Directory.CreateDirectory(downloadFolder);
-                for (int i = minChapter; i <= maxChapter; i++)
-                {
-                    HtmlAgilityPack.HtmlDocument doc = web.Load(URLText.Replace("[i]", i + ""));
-
-                    using (StreamWriter wr = new StreamWriter(
-                        downloadFolder + "/" + chapterName.Replace("[i]", "" +
-                        Zeroe(i, maxChapter.ToString().Length)) + ".txt", false))
-                    {
-                        HtmlAgilityPack.HtmlDocument doc2 = new HtmlAgilityPack.HtmlDocument();
-                        doc2.LoadHtml(doc.GetElementbyId(chapterContentID).OuterHtml);
-                        HtmlNodeCollection paragraphs = doc2.DocumentNode.SelectNodes("//p");
-                        string[] str = new string[paragraphs.Count];
-                        for (int j = 0; j < str.Length; j++)
-                        {
-                            str[j] = paragraphs[j].InnerText;
-                        }
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            LoadingBar.Value++;
-                            ProgressLabel.Content = "Downloaded: " + LoadingBar.Value + "/" + totalChapters;
-                        });
-                        
-                        wr.WriteLine(string.Join("\n\n", str));
-                    }
-                }
-
+                Download(downloadFolder, chapterName, chapterContentID, URLText, minChapter, maxChapter, totalChapters);
             }));
+        }
+
+        private void Download(string downloadFolder, string chapterName, string chapterContentID, string URLText, int minChapter, int maxChapter, int totalChapters)
+        {
+            HtmlWeb web = new HtmlWeb();
+            Directory.CreateDirectory(downloadFolder);
+            for (int i = minChapter; i <= maxChapter; i++)
+            {
+                HtmlAgilityPack.HtmlDocument doc = web.Load(URLText.Replace("[i]", i + ""));
+
+                using (StreamWriter wr = new StreamWriter(
+                    downloadFolder + "/" + chapterName.Replace("[i]", "" +
+                    Zeroe(i, maxChapter.ToString().Length)) + ".txt", false))
+                {
+                    HtmlAgilityPack.HtmlDocument doc2 = new HtmlAgilityPack.HtmlDocument();
+                    doc2.LoadHtml(doc.GetElementbyId(chapterContentID).OuterHtml);
+                    HtmlNodeCollection paragraphs = doc2.DocumentNode.SelectNodes("//p");
+                    string[] str = new string[paragraphs.Count];
+                    for (int j = 0; j < str.Length; j++)
+                    {
+                        str[j] = paragraphs[j].InnerText;
+                    }
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        LoadingBar.Value++;
+                        ProgressLabel.Content = "Downloaded: " + LoadingBar.Value + "/" + totalChapters;
+                    });
+
+                    wr.WriteLine(string.Join("\n\n", str));
+                }
+            }
         }
 
         private void InitializeProgress(int totalChapters)
