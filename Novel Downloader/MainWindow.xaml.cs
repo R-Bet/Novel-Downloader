@@ -98,6 +98,18 @@ namespace Novel_Downloader
 
         private bool CheckErrors()
         {
+            if (!URLTextBox.Text.Contains("[i]"))
+            {
+                MessageBox.Show("No variable in URL. Please enter valid URL with variable.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false; ;
+            }
+
+            if (!URLTextBox.Text.Contains("[i]"))
+            {
+                MessageBox.Show("No variable in chapter name. Please enter valid chapter name with variable.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false; ;
+            }
+
             try
             {
                 int.Parse(MinChapterTXT.Text);
